@@ -10,6 +10,8 @@ mongoose.connection.on("connected", () => {
     console.log(`connected to MongoDB ${mongoose.connection.name}.`)
 })
 
+const Blog = require("./models/blog.js");
+
 // GET / Landing Page
 app.get("/", async (req, res) => {
 res.render("index.ejs");

@@ -1,14 +1,18 @@
 const dotenv = require('dotenv');
 dotenv.config();
 const express = require('express');
-const mongoose = require("mongoose");
 const Blog = require("./models/blog.js");
 
 // Constants
 const app = express();
+const mongoose = require("mongoose");
+const methodOverride = require("method-override");
+const morgan = require("morgan");
 
 // Middleware
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride("_method"));
+app.use(morgan("dev"));
 
 // DB Connection
 
@@ -19,22 +23,27 @@ mongoose.connection.on("connected", () => {
 
 // Routes
 
-//      GET / Landing Page
+//      GET / Landing Page / Index
 app.get("/", async (req, res) => {
     res.render("index.ejs");
 });
 
-//      GET /blogs/new
+//      GET /blogs/new / New
 app.get("/blogs/new", async (req, res) => {
     res.render("blogs/new.ejs");
 });
 
-//       POST /blogs
-app.post("/blogs", async (req, res) => {
+//       POST /blogs / Create
+app.post("/blogs", async (req, res) => {    
     console.log(req.body);
     await Blog.create(req.body);
-    res.redirect("/blogs/new");
+    res.redirect("/blogs/");
 })
+//      GET /blogs
+app.get("/blogs", async (req, res) => {
+   const allBlogs = await Blog.find();
+   res.render("blogs/index.ejs", { blogs: allBlogs });
+});
 
 app.listen(3000, () => {
     console.log('listening on port 3000');

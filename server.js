@@ -33,6 +33,12 @@ app.get("/blogs/new", async (req, res) => {
     res.render("blogs/new.ejs");
 });
 
+//      GET /blogs/:blogId
+app.get("/blogs/:blogId", async (req, res) => {
+   const foundBlog = await Blog.findById(req.params.blogId);
+   res.render("blogs/show.ejs", { blog: foundBlog });
+});
+
 //       POST /blogs / Create
 app.post("/blogs", async (req, res) => {    
     console.log(req.body);
@@ -44,6 +50,8 @@ app.get("/blogs", async (req, res) => {
    const allBlogs = await Blog.find();
    res.render("blogs/index.ejs", { blogs: allBlogs });
 });
+
+
 
 app.listen(3000, () => {
     console.log('listening on port 3000');

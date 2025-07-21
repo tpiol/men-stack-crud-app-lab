@@ -51,7 +51,11 @@ app.get("/blogs", async (req, res) => {
    res.render("blogs/index.ejs", { blogs: allBlogs });
 });
 
-
+// DELETE 
+app.delete("/blogs/:blogId", async (req, res) => {
+    await Blog.findByIdAndDelete(req.params.blogId);
+    res.redirect("/blogs");
+})
 
 app.listen(3000, () => {
     console.log('listening on port 3000');

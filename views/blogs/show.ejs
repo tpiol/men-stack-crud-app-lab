@@ -7,6 +7,9 @@
   </head>
   <body>
     <h1><%= blog.title %></h1>
+    <form action="/blogs/<%=blog._id%>?_method=DELETE" method="POST">
+        <button type="submit">Delete <%= blog.title %></button>
+    </form>
     <a href="/blogs/">Back to Blogs</a>
   </body>
 </html>

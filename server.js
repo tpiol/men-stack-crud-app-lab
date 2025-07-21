@@ -39,6 +39,14 @@ app.get("/blogs/:blogId", async (req, res) => {
    res.render("blogs/show.ejs", { blog: foundBlog });
 });
 
+// GET /blogs/:blogId/edit
+app.get("/blogs/:blogId/edit", async (req, res) => {
+    const foundBlog = await Blog.findById(req.params.blogId);
+   res.render("blogs/edit.ejs", {
+    blog: foundBlog,
+   });
+});
+
 //       POST /blogs / Create
 app.post("/blogs", async (req, res) => {    
     console.log(req.body);

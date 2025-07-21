@@ -28,9 +28,23 @@ app.get("/", async (req, res) => {
     res.render("index.ejs");
 });
 
+//      GET /blogs
+app.get("/blogs", async (req, res) => {
+   const allBlogs = await Blog.find();
+   res.render("blogs/index.ejs", { blogs: allBlogs });
+});
+
+
 //      GET /blogs/new / New
 app.get("/blogs/new", async (req, res) => {
     res.render("blogs/new.ejs");
+});
+
+//       POST /blogs / Create
+app.post("/blogs", async (req, res) => {    
+    console.log(req.body);
+    await Blog.create(req.body);
+    res.redirect("/blogs/");
 });
 
 //      GET /blogs/:blogId
@@ -39,7 +53,8 @@ app.get("/blogs/:blogId", async (req, res) => {
    res.render("blogs/show.ejs", { blog: foundBlog });
 });
 
-// GET /blogs/:blogId/edit
+
+//       GET /blogs/:blogId/edit
 app.get("/blogs/:blogId/edit", async (req, res) => {
     const foundBlog = await Blog.findById(req.params.blogId);
    res.render("blogs/edit.ejs", {
@@ -47,19 +62,13 @@ app.get("/blogs/:blogId/edit", async (req, res) => {
    });
 });
 
-//       POST /blogs / Create
-app.post("/blogs", async (req, res) => {    
-    console.log(req.body);
-    await Blog.create(req.body);
-    res.redirect("/blogs/");
-})
-//      GET /blogs
-app.get("/blogs", async (req, res) => {
-   const allBlogs = await Blog.find();
-   res.render("blogs/index.ejs", { blogs: allBlogs });
+//      PUT /blogs/:id
+app.put("/blogs/:blogId", async (req, res) => {
+    await Blog.findByIdAndUpdate(req.params.blogId, req.body)
+    res.redirect(`/blogs/${req.params.blogId}`);
 });
 
-// DELETE 
+//      DELETE 
 app.delete("/blogs/:blogId", async (req, res) => {
     await Blog.findByIdAndDelete(req.params.blogId);
     res.redirect("/blogs");

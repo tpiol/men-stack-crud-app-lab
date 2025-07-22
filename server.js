@@ -28,7 +28,7 @@ app.get("/", async (req, res) => {
     res.render("index.ejs");
 });
 
-//      GET /blogs
+//      GET /blogs / Index
 app.get("/blogs", async (req, res) => {
    const allBlogs = await Blog.find();
    res.render("blogs/index.ejs", { blogs: allBlogs });
@@ -39,7 +39,7 @@ app.get("/blogs", async (req, res) => {
 app.get("/blogs/new", async (req, res) => {
     res.render("blogs/new.ejs");
 });
-
+sessionStorage
 //       POST /blogs / Create
 app.post("/blogs", async (req, res) => {    
     console.log(req.body);
@@ -47,14 +47,14 @@ app.post("/blogs", async (req, res) => {
     res.redirect("/blogs/");
 });
 
-//      GET /blogs/:blogId
+//      GET /blogs/:blogId / Show
 app.get("/blogs/:blogId", async (req, res) => {
    const foundBlog = await Blog.findById(req.params.blogId);
    res.render("blogs/show.ejs", { blog: foundBlog });
 });
 
 
-//       GET /blogs/:blogId/edit
+//       GET /blogs/:blogId/edit / Edit
 app.get("/blogs/:blogId/edit", async (req, res) => {
     const foundBlog = await Blog.findById(req.params.blogId);
    res.render("blogs/edit.ejs", {
@@ -62,13 +62,13 @@ app.get("/blogs/:blogId/edit", async (req, res) => {
    });
 });
 
-//      PUT /blogs/:id
+//      PUT /blogs/:id / Update
 app.put("/blogs/:blogId", async (req, res) => {
     await Blog.findByIdAndUpdate(req.params.blogId, req.body)
     res.redirect(`/blogs/${req.params.blogId}`);
 });
 
-//      DELETE 
+//      DELETE  / Delete
 app.delete("/blogs/:blogId", async (req, res) => {
     await Blog.findByIdAndDelete(req.params.blogId);
     res.redirect("/blogs");
